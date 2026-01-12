@@ -1,0 +1,86 @@
+2026-01-12 11:54:51.935  3932-3966  TextToSpeech            dlxsoft.szstgface                    I  Sucessfully bound to com.xiaomi.mibrain.speech
+2026-01-12 11:54:51.940  3932-3932  TextToSpeech            dlxsoft.szstgface                    I  Connected to ComponentInfo{com.xiaomi.mibrain.speech/com.xiaomi.mibrain.speech.tts.TtsService}
+2026-01-12 11:54:51.944  3932-3992  TextToSpeech            dlxsoft.szstgface                    I  Set up connection to ComponentInfo{com.xiaomi.mibrain.speech/com.xiaomi.mibrain.speech.tts.TtsService}
+2026-01-12 11:54:52.443  3932-3966  xsoft.szstgfac          dlxsoft.szstgface                    A  runtime.cc:655]   native: #45 pc 0001061d  /data/app/~~GXgqLhQQoaEPNLLLCvFeyA==/dlxsoft.szstgface-lA0KryKWBTEM6_p4o7Qq6A==/base.apk!libfbjni.so (offset 30b4000) (facebook::jni::detail::FunctionWrapper<void (*)(facebook::jni::alias_ref<facebook::jni::detail::JTypeFor<facebook::jni::HybridClass<facebook::jni::JNativeRunnable, facebook::jni::JRunnable>::JavaPart, facebook::jni::JRunnable, void>::_javaobject*>), facebook::jni::detail::JTypeFor<facebook::jni::HybridClass<facebook::jni::JNativeRunnable, facebook::jni::JRunnable>::JavaPart, facebook::jni::JRunnable, void>::_javaobject*, void>::call(_JNIEnv*, _jobject*, void (*)(facebook::jni::alias_ref<facebook::jni::detail::JTypeFor<facebook::jni::HybridClass<facebook::jni::JNativeRunnable, facebook::jni::JRunnable>::JavaPart, facebook::jni::JRunnable, void>::_javaobject*>))+32)
+                                                                                                    runtime.cc:655]   at com.facebook.jni.NativeRunnable.run(Native method)
+                                                                                                    runtime.cc:655]   at android.os.Handler.handleCallback(Handler.java:938)
+                                                                                                    runtime.cc:655]   at android.os.Handler.dispatchMessage(Handler.java:99)
+                                                                                                    runtime.cc:655]   at com.facebook.react.bridge.queue.MessageQueueThreadHandler.dispatchMessage(MessageQueueThreadHandler.java:27)
+                                                                                                    runtime.cc:655]   at android.os.Looper.loop(Looper.java:236)
+                                                                                                    runtime.cc:655]   at com.facebook.react.bridge.queue.MessageQueueThreadImpl.lambda$startNewBackgroundThread$2(MessageQueueThreadImpl.java:217)
+                                                                                                    runtime.cc:655]   at com.facebook.react.bridge.queue.MessageQueueThreadImpl$$ExternalSyntheticLambda1.run(D8$$SyntheticClass:0)
+                                                                                                    runtime.cc:655]   at java.lang.Thread.run(Thread.java:923)
+                                                                                                    runtime.cc:655]
+                                                                                                    runtime.cc:655] "main" prio=10 tid=1 Native
+                                                                                                    runtime.cc:655]   | group="" sCount=1 dsCount=0 flags=1 obj=0x711d0b80 self=0xf14b9e00
+                                                                                                    runtime.cc:655]   | sysTid=3932 nice=-10 cgrp=default sched=0/0 handle=0xf1a63470
+                                                                                                    runtime.cc:655]   | state=S schedstat=( 496216616 34982383 359 ) utm=38 stm=11 core=2 HZ=100
+                                                                                                    runtime.cc:655]   | stack=0xff693000-0xff695000 stackSize=8192KB
+                                                                                                    runtime.cc:655]   | held mutexes=
+                                                                                                    runtime.cc:655]   native: #00 pc 0005e4b8  /apex/com.android.runtime/lib/bionic/libc.so (syscall+28)
+                                                                                                    runtime.cc:655]   native: #01 pc 00130db3  /apex/com.android.art/lib/libart.so (art::ConditionVariable::WaitHoldingLocks(art::Thread*)+82)
+                                                                                                    runtime.cc:655]   native: #02 pc 004ccbfb  /apex/com.android.art/lib/libart.so (art::GoToRunnable(art::Thread*)+338)
+                                                                                                    runtime.cc:655]   native: #03 pc 004cca81  /apex/com.android.art/lib/libart.so (art::JniMethodEnd(unsigned int, art::Thread*)+8)
+                                                                                                    runtime.cc:655]   at android.os.BinderProxy.transactNative(Native method)
+                                                                                                    runtime.cc:655]   at android.os.BinderProxy.transact(BinderProxy.java:540)
+                                                                                                    runtime.cc:655]   at android.speech.tts.ITextToSpeechService$Stub$Proxy.getVoices(ITextToSpeechService.java:1027)
+                                                                                                    runtime.cc:655]   at android.speech.tts.TextToSpeech.getVoice(TextToSpeech.java:1699)
+                                                                                                    runtime.cc:655]   at android.speech.tts.TextToSpeech.lambda$setLanguage$8$TextToSpeech(TextToSpeech.java:1527)
+                                                                                                    runtime.cc:655]   at android.speech.tts.-$$Lambda$TextToSpeech$RsLPOHbMGtIthv7AyRho2VQZrE0.run(lambda:-1)
+                                                                                                    runtime.cc:655]   at android.speech.tts.TextToSpeech$Connection.runAction(TextToSpeech.java:2312)
+                                                                                                    runtime.cc:655]   - locked <0x070cc79d> (a java.lang.Object)
+                                                                                                    runtime.cc:655]   at android.speech.tts.TextToSpeech.runAction(TextToSpeech.java:791)
+                                                                                                    runtime.cc:655]   - locked <0x070cc79d> (a java.lang.Object)
+                                                                                                    runtime.cc:655]   at android.speech.tts.TextToSpeech.runAction(TextToSpeech.java:781)
+                                                                                                    runtime.cc:655]   at android.speech.tts.TextToSpeech.setLanguage(TextToSpeech.java:1481)
+                                                                                                    runtime.cc:655]   at com.mhpdev.speech.RNSpeechModule.applyGlobalOptions(RNSpeechModule.kt:284)
+                                                                                                    runtime.cc:655]   at com.mhpdev.speech.RNSpeechModule.initializeTTS$lambda$6(RNSpeechModule.kt:254)
+                                                                                                    runtime.cc:655]   at com.mhpdev.speech.RNSpeechModule.$r8$lambda$2zun3kNJYpMW87_YH7wXk9cWFDY(RNSpeechModule.kt:-1)
+                                                                                                    runtime.cc:655]   at com.mhpdev.speech.RNSpeechModule$$ExternalSyntheticLambda5.onInit(D8$$SyntheticClass:0)
+2026-01-12 11:54:52.443  3932-3966  xsoft.szstgfac          dlxsoft.szstgface                    A  runtime.cc:655]   at android.speech.tts.TextToSpeech.dispatchOnInit(TextToSpeech.java:863)
+                                                                                                    runtime.cc:655]   - locked <0x070cc79d> (a java.lang.Object)
+                                                                                                    runtime.cc:655]   at android.speech.tts.TextToSpeech.access$800(TextToSpeech.java:77)
+                                                                                                    runtime.cc:655]   at android.speech.tts.TextToSpeech$Connection$SetupConnectionAsyncTask.onPostExecute(TextToSpeech.java:2226)
+                                                                                                    runtime.cc:655]   - locked <0x070cc79d> (a java.lang.Object)
+                                                                                                    runtime.cc:655]   at android.speech.tts.TextToSpeech$Connection$SetupConnectionAsyncTask.onPostExecute(TextToSpeech.java:2181)
+                                                                                                    runtime.cc:655]   at android.os.AsyncTask.finish(AsyncTask.java:771)
+                                                                                                    runtime.cc:655]   at android.os.AsyncTask.access$900(AsyncTask.java:199)
+                                                                                                    runtime.cc:655]   at android.os.AsyncTask$InternalHandler.handleMessage(AsyncTask.java:788)
+                                                                                                    runtime.cc:655]   at android.os.Handler.dispatchMessage(Handler.java:106)
+                                                                                                    runtime.cc:655]   at android.os.Looper.loop(Looper.java:236)
+                                                                                                    runtime.cc:655]   at android.app.ActivityThread.main(ActivityThread.java:7912)
+                                                                                                    runtime.cc:655]   at java.lang.reflect.Method.invoke(Native method)
+                                                                                                    runtime.cc:655]   at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:620)
+                                                                                                    runtime.cc:655]   at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1011)
+                                                                                                    runtime.cc:655]
+                                                                                                    runtime.cc:655] "Runtime worker thread 0" prio=10 tid=2 Native (still starting up)
+                                                                                                    runtime.cc:655]   | group="" sCount=1 dsCount=0 flags=1 obj=0x0 self=0xf14bac00
+                                                                                                    runtime.cc:655]   | sysTid=3938 nice=-20 cgrp=default sched=0/0 handle=0xf13e9d60
+                                                                                                    runtime.cc:655]   | state=S schedstat=( 335000 92461 2 ) utm=0 stm=0 core=4 HZ=100
+                                                                                                    runtime.cc:655]   | stack=0xf13db000-0xf13dd000 stackSize=63KB
+                                                                                                    runtime.cc:655]   | held mutexes=
+                                                                                                    runtime.cc:655]   native: #00 pc 0005e4b8  /apex/com.android.runtime/lib/bionic/libc.so (syscall+28)
+                                                                                                    runtime.cc:655]   native: #01 pc 00130db3  /apex/com.android.art/lib/libart.so (art::ConditionVariable::WaitHoldingLocks(art::Thread*)+82)
+                                                                                                    runtime.cc:655]   native: #02 pc 00459763  /apex/com.android.art/lib/libart.so (art::ThreadPool::GetTask(art::Thread*)+58)
+                                                                                                    runtime.cc:655]   native: #03 pc 00458e55  /apex/com.android.art/lib/libart.so (art::ThreadPoolWorker::Run()+40)
+                                                                                                    runtime.cc:655]   native: #04 pc 00458ac9  /apex/com.android.art/lib/libart.so (art::ThreadPoolWorker::Callback(void*)+116)
+                                                                                                    runtime.cc:655]   native: #05 pc 000aaf93  /apex/com.android.runtime/lib/bionic/libc.so (__pthread_start(void*)+40)
+                                                                                                    runtime.cc:655]   native: #06 pc 00064203  /apex/com.android.runtime/lib/bionic/libc.so (__start_thread+30)
+                                                                                                    runtime.cc:655]   (no managed stack frames)
+                                                                                                    runtime.cc:655]
+                                                                                                    runtime.cc:655] "Runtime worker thread 1" prio=10 tid=3 Native (still starting up)
+                                                                                                    runtime.cc:655]   | group="" sCount=1 dsCount=0 flags=1 obj=0x0 self=0xf14bba00
+                                                                                                    runtime.cc:655]   | sysTid=3940 nice=-20 cgrp=default sched=0/0 handle=0xd9c5ed60
+                                                                                                    runtime.cc:655]   | state=S schedstat=( 272538 300924 2 ) utm=0 stm=0 core=6 HZ=100
+                                                                                                    runtime.cc:655]   | stack=0xd9c50000-0xd9c52000 stackSize=63KB
+                                                                                                    runtime.cc:655]   | held mutexes=
+                                                                                                    runtime.cc:655]   native: #00 pc 0005e4b8  /apex/com.android.runtime/lib/bionic/libc.so (syscall+28)
+                                                                                                    runtime.cc:655]   native: #01 pc 00130db3  /apex/com.android.art/lib/libart.so (art::ConditionVariable::WaitHoldingLocks(art::Thread*)+82)
+                                                                                                    runtime.cc:655]   native: #02 pc 00459763  /apex/com.android.art/lib/libart.so (art::ThreadPool::GetTask(art::Thread*)+58)
+                                                                                                    runtime.cc:655]   native: #03 pc 00458e55  /apex/com.android.art/lib/libart.so (art::ThreadPoolWorker::Run()+40)
+                                                                                                    runtime.cc:655]   native: #04 pc 00458ac9  /apex/com.android.art/lib/libart.so (art::ThreadPoolWorker::Callback(void*)+116)
+                                                                                                    runtime.cc:655]   native: #05 pc 000aaf93  /apex/com.android.runtime/lib/bionic/libc.so (__pthread_start(void*)+40)
+                                                                                                    runtime.cc:655]   native: #06 pc 00064203  /apex/com.android.runtime/lib/bionic/libc.so (__start_thread+30)
+                                                                                                    runtime.cc:655]   (no managed stack frames)
+                                                                                                    runtime.cc:655]
+                                                                                                    runtime.cc:655] "Runtime worker thread 2" prio=10 tid=4 Native (still starting up)

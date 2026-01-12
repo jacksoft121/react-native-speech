@@ -12,6 +12,9 @@ import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.annotation.SuppressLint
 import android.speech.tts.TextToSpeech
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
@@ -36,6 +39,7 @@ class RNSpeechModule(reactContext: ReactApplicationContext) :
 
   companion object {
     const val NAME = "RNSpeech"
+    private const val TAG = "RNSpeechModule"
 
     private val defaultOptions: Map<String, Any> = mapOf(
       "rate" to 0.5f,
@@ -57,6 +61,10 @@ class RNSpeechModule(reactContext: ReactApplicationContext) :
   private var isInitialized = false
   private var isInitializing = false
   private val pendingOperations = mutableListOf<Pair<() -> Unit, Promise>>()
+
+  private val mainHandler = Handler(Looper.getMainLooper())
+  private var pendingApplyGlobalOptions = false
+  private var applyGlobalOptionsRetriesLeft = 3
 
   private var globalOptions: MutableMap<String, Any> = defaultOptions.toMutableMap()
 
@@ -251,7 +259,9 @@ class RNSpeechModule(reactContext: ReactApplicationContext) :
             }
           }
         })
-        applyGlobalOptions()
+        // Avoid calling setLanguage()/getVoices() inside the onInit callback.
+        // Some OEM engines can crash or block if queried too early.
+        scheduleApplyGlobalOptions(initialDelayMs = 150)
         processPendingOperations()
       } else {
         rejectPendingOperations()
@@ -279,23 +289,61 @@ class RNSpeechModule(reactContext: ReactApplicationContext) :
   }
 
   private fun applyGlobalOptions() {
-    globalOptions["language"]?.let {
-      val locale = Locale.forLanguageTag(it as String)
-      synthesizer.setLanguage(locale)
+    // If JS calls setLanguage/setRate/etc. before the native engine finished initializing,
+    // calling into TextToSpeech too early can crash/hang on some OEM implementations.
+    if (!isInitialized) {
+      pendingApplyGlobalOptions = true
+      return
     }
-    globalOptions["pitch"]?.let {
-      synthesizer.setPitch(it as Float)
-    }
-    globalOptions["rate"]?.let {
-      synthesizer.setSpeechRate(it as Float)
-    }
-    globalOptions["voice"]?.let { voiceId ->
-      synthesizer.voices?.forEach { voice ->
-        if (voice.name == voiceId) {
-          synthesizer.voice = voice
-          return@forEach
-        }
+    safeApplyOptions(globalOptions)
+  }
+
+  private fun scheduleApplyGlobalOptions(
+    initialDelayMs: Long = 0,
+    maxRetries: Int = 2,
+    retryDelayMs: Long = 500,
+  ) {
+    pendingApplyGlobalOptions = true
+    applyGlobalOptionsRetriesLeft = maxRetries
+
+    fun attempt() {
+      if (!pendingApplyGlobalOptions || !isInitialized) return
+
+      val ok = runCatching { safeApplyOptions(globalOptions) }.isSuccess
+      if (ok) {
+        pendingApplyGlobalOptions = false
+        return
       }
+
+      applyGlobalOptionsRetriesLeft -= 1
+      if (applyGlobalOptionsRetriesLeft > 0) {
+        // retry (engine might finish loading voices a bit later)
+        mainHandler.postDelayed({ attempt() }, retryDelayMs)
+      }
+    }
+
+    mainHandler.postDelayed({ attempt() }, initialDelayMs)
+  }
+
+  private fun safeApplyOptions(options: Map<String, Any>) {
+    options["language"]?.let {
+      val locale = Locale.forLanguageTag(it as String)
+      runCatching { synthesizer.setLanguage(locale) }
+        .onFailure { e -> Log.w(NAME, "setLanguage failed: ${locale.toLanguageTag()}", e) }
+    }
+    options["pitch"]?.let {
+      runCatching { synthesizer.setPitch(it as Float) }
+        .onFailure { e -> Log.w(NAME, "setPitch failed", e) }
+    }
+    options["rate"]?.let {
+      runCatching { synthesizer.setSpeechRate(it as Float) }
+        .onFailure { e -> Log.w(NAME, "setSpeechRate failed", e) }
+    }
+    options["voice"]?.let { voiceId ->
+      runCatching {
+        val target = synthesizer.voices?.firstOrNull { it.name == voiceId }
+        if (target != null) synthesizer.voice = target
+      }.onFailure { e -> Log.w(NAME, "setVoice failed: $voiceId", e) }
     }
   }
 
@@ -303,24 +351,7 @@ class RNSpeechModule(reactContext: ReactApplicationContext) :
     val tempOptions = globalOptions.toMutableMap().apply {
       putAll(options)
     }
-    tempOptions["language"]?.let {
-      val locale = Locale.forLanguageTag(it as String)
-      synthesizer.setLanguage(locale)
-    }
-    tempOptions["pitch"]?.let {
-      synthesizer.setPitch(it as Float)
-    }
-    tempOptions["rate"]?.let {
-      synthesizer.setSpeechRate(it as Float)
-    }
-    tempOptions["voice"]?.let { voiceId ->
-      synthesizer.voices?.forEach { voice ->
-        if (voice.name == voiceId) {
-          synthesizer.voice = voice
-          return@forEach
-        }
-      }
-    }
+    safeApplyOptions(tempOptions)
   }
 
   private fun getValidatedOptions(options: ReadableMap): Map<String, Any> {

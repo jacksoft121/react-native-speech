@@ -139,3 +139,13 @@ See the [contributing guide](./docs/CONTRIBUTING.md) to learn how to contribute 
 ## License
 
 MIT
+
+## fix bug
+bug日志：bugs/bug.txt
+如果 JS 在 TTS 初始化完成前就调用 setLanguage/setRate/setPitch：不再立刻触发 TextToSpeech（只缓存参数，等初始化完成后再应用），避免 OEM 引擎早期崩。
+
+onInit 回调里不再直接 applyGlobalOptions：改成 延迟 150ms 应用，并带 重试机制（引擎声音列表可能稍后才加载完）。
+
+setLanguage / setPitch / setSpeechRate / setVoice 全部加 runCatching 保护：引擎抛异常时不至于把 App 带崩，会打 Log.w。
+## 本地安装
+yarn add vision-camera-resize-plugin@file:/Users/jackxu/dlxcode/react-native-speech
